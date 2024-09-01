@@ -1,16 +1,23 @@
 import { Injectable } from '@angular/core';
-import { User } from '@angular/fire/auth';
-import { doc, Firestore, getDoc, setDoc, updateDoc } from '@angular/fire/firestore';
+import { User as AuthUser } from '@angular/fire/auth';
+import {
+  doc,
+  DocumentData,
+  Firestore,
+  getDoc,
+  setDoc,
+  updateDoc,
+} from '@angular/fire/firestore';
 import { from, map, Observable } from 'rxjs';
+import { User } from '../../shared/models/user';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
+  constructor(private firestore: Firestore) {}
 
-  constructor(private firestore: Firestore) { }
-
-  async addUser(user: User): Promise<void> {
+  async addUser(user: AuthUser): Promise<void> {
     try {
       const userDocRef = doc(this.firestore, `Users/${user.uid}`);
       const userDoc = await getDoc(userDocRef);
@@ -20,7 +27,7 @@ export class UserService {
           email: user.email,
           displayName: user.displayName,
           photoURL: user.photoURL,
-          createdAt: new Date()
+          createdAt: new Date(),
         });
       }
     } catch (error) {
@@ -28,14 +35,14 @@ export class UserService {
     }
   }
 
-  getUser(uid: string): Observable<any> {
+  getUser(uid: string): Observable<User | null> {
     const userDocRef = doc(this.firestore, `Users/${uid}`);
     return from(getDoc(userDocRef)).pipe(
-      map(docSnap => docSnap.exists() ? docSnap.data() : null)
+      map((docSnap) => (docSnap.exists() ? (docSnap.data() as User) : null)),
     );
   }
 
-  async updateUser(uid: string, data: any): Promise<void> {
+  async updateUser(uid: string, data: DocumentData): Promise<void> {
     try {
       const userDocRef = doc(this.firestore, `Users/${uid}`);
       await updateDoc(userDocRef, data);
@@ -43,5 +50,4 @@ export class UserService {
       console.error('Error updating user:', error);
     }
   }
-
 }

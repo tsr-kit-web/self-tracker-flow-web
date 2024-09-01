@@ -7,6 +7,6 @@ export const environment = {
     projectId: _NGX_ENV_.NG_APP_FIREBASE_PROJECT_ID,
     storageBucket: _NGX_ENV_.NG_APP_FIREBASE_STORAGE_BUCKET,
     messagingSenderId: _NGX_ENV_.NG_APP_FIREBASE_MESSAGING_SENDER_ID,
-    appId: _NGX_ENV_.NG_APP_FIREBASE_APP_ID
-  }
+    appId: _NGX_ENV_.NG_APP_FIREBASE_APP_ID,
+  },
 };

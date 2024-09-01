@@ -7,34 +7,32 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [],
   templateUrl: './login-page.component.html',
-  styleUrl: './login-page.component.scss'
+  styleUrl: './login-page.component.scss',
 })
 export class LoginPageComponent {
   constructor(
-    private authService: AuthService, 
-    private router: Router, 
-  ){}
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
-  async signInWithGoogle(): Promise<void> { 
-
+  async signInWithGoogle(): Promise<void> {
     const isSignInSuccess = await this.authService.signInWithGoogle();
 
     if (!isSignInSuccess) {
       console.error('SignIn failed');
       return;
-    } 
+    }
 
     this.router.navigate(['/tracker']);
   }
 
   async signOutUser(): Promise<void> {
-
     const isSingOutSuccess = await this.authService.signOutUser();
 
     if (!isSingOutSuccess) {
       console.error('Sign out failed');
       return;
-    } 
+    }
 
     this.router.navigate(['/login']);
   }

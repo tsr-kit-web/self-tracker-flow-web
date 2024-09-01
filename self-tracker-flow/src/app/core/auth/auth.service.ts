@@ -1,19 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Auth, GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, user, User, UserCredential } from '@angular/fire/auth';
-import { BehaviorSubject } from 'rxjs';
+import {
+  Auth,
+  GithubAuthProvider,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithPopup,
+  user,
+  User,
+  UserCredential,
+} from '@angular/fire/auth';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { UserService } from '../api/user.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   private currentUserSubject = new BehaviorSubject<User | null>(null);
 
   constructor(
     private auth: Auth,
-    private userService: UserService
-  ) { 
+    private userService: UserService,
+  ) {
     this.setupAuthStateListener();
   }
 
@@ -27,17 +35,19 @@ export class AuthService {
     return !!this.currentUserSubject.value;
   }
 
-  async signInWithGoogle(): Promise<boolean>  {
+  async signInWithGoogle(): Promise<boolean> {
     const provider = new GoogleAuthProvider();
     return this.processUserLogin(provider);
   }
 
-  async signInWithGithub(): Promise<boolean>  {
+  async signInWithGithub(): Promise<boolean> {
     const provider = new GithubAuthProvider();
     return this.processUserLogin(provider);
   }
 
-  async processUserLogin(provider: GoogleAuthProvider | GithubAuthProvider): Promise<boolean> {
+  async processUserLogin(
+    provider: GoogleAuthProvider | GithubAuthProvider,
+  ): Promise<boolean> {
     try {
       const result: UserCredential = await signInWithPopup(this.auth, provider);
       const user = result.user;
@@ -54,7 +64,7 @@ export class AuthService {
     }
   }
 
-  getAuthUser() {
+  getAuthUser(): Observable<User> {
     return user(this.auth);
   }
 
@@ -64,9 +74,8 @@ export class AuthService {
 
       return true;
     } catch (error) {
-      
       console.error('Error during logout:', error);
-      return false
+      return false;
     }
   }
 }
