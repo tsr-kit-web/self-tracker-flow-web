@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TrackerPageComponent } from './tracker-page.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('TrackerPageComponent', () => {
   let component: TrackerPageComponent;
@@ -8,7 +9,7 @@ describe('TrackerPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TrackerPageComponent],
+      imports: [TrackerPageComponent, RouterTestingModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TrackerPageComponent);
