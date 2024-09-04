@@ -10,7 +10,11 @@
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
     "format": "prettier --write \"src/**/*.{ts,html,scss}\"",
-    "lint-and-format": "npm run lint:fix && npm run format"
+    "lint-and-format": "npm run lint:fix && npm run format",
+    "ci:lint": "ng lint --fix && prettier --check \"src/**/*.ts\"",
+    "ci:test": "ng test --watch=false --no-progress --browsers=ChromeHeadlessCI",
+    "ci:build": "ng build --configuration=production",
+    "ci": "npm run ci:lint && npm run ci:test && npm run ci:build"
   },
   "private": true,
   "dependencies": {
