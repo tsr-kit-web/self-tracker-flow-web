@@ -82,7 +82,15 @@
           "builder": "@ngx-env/builder:extract-i18n"
         },
         "test": {
-          "builder": "@ngx-env/builder:karma",
+          "builder": "@angular-devkit/build-angular:karma",
+          "configurations": {
+            "production": {
+              "sourceMap": false,
+              "codeCoverage": true,
+              "browsers": "ChromeHeadless",
+              "watch": false
+            }
+          },
           "options": {
             "polyfills": [
               "zone.js",
@@ -90,6 +98,7 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
+            "karmaConfig": "karma.conf.js",
             "assets": [
               {
                 "glob": "**/*",
