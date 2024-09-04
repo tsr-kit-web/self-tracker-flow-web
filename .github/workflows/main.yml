@@ -27,7 +27,16 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Cache npm modules
+        uses: actions/cache@v3
+        with:
+          path: self-tracker-flow/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('self-tracker-flow/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install dependencies
+        working-directory: self-tracker-flow
         run: npm ci
 
       - name: Set up environment variables
@@ -41,12 +50,15 @@ jobs:
           echo "NG_APP_FIREBASE_APP_ID=${{ secrets.NG_APP_FIREBASE_APP_ID }}" >> $GITHUB_ENV
 
       - name: Lint code
+        working-directory: self-tracker-flow
         run: npm run ci:lint
 
       - name: Run tests
+        working-directory: self-tracker-flow
         run: npm run ci:test
 
       - name: Build
+        working-directory: self-tracker-flow
         run: npm run ci:build
 
       # Uncomment to upload build artifacts
@@ -54,4 +66,4 @@ jobs:
       #   uses: actions/upload-artifact@v3
       #   with:
       #     name: build
-      #     path: dist/
+      #     path: self-tracker-flow/dist/
