@@ -20,10 +20,12 @@ jobs:
 
       - name: List build output before deploy
         working-directory: self-tracker-flow
-        run: ls -R dist/self-tracker-flow/browser
+        run: |
+          echo "Contents of dist directory:"
+          ls -R dist/
 
       - name: Deploy to Firebase Hosting
-        working-directory: self-tracker-flow 
+        working-directory: self-tracker-flow
         run: |
           firebase deploy --only hosting
         env:
