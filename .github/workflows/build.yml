@@ -60,3 +60,9 @@ jobs:
       - name: Build
         working-directory: self-tracker-flow
         run: npm run ci:build
+        
+      - name: List build output
+        working-directory: self-tracker-flow
+        run: |
+          echo "Contents of dist directory:"
+          ls -R dist/
