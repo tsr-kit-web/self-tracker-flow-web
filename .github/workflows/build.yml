@@ -66,3 +66,9 @@ jobs:
         run: |
           echo "Contents of dist directory:"
           ls -R dist/
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist/
