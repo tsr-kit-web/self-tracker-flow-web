@@ -61,9 +61,9 @@ jobs:
         working-directory: self-tracker-flow
         run: npm run ci:build
 
-      # Uncomment to upload build artifacts
-      # - name: Upload build artifacts
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: build
-      #     path: self-tracker-flow/dist/
+      - name: Deploy to Firebase Hosting
+        uses: wzieba/Firebase-Action@v2
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_AUTH_TOKEN: ${{ secrets.FIREBASE_AUTH_TOKEN }}
