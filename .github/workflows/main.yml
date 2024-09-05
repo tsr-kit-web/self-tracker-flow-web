@@ -65,6 +65,7 @@ jobs:
         run: npm run ci:build
 
       - name: Deploy to Firebase Hosting
+        working-directory: self-tracker-flow 
         run: |
           firebase deploy --only hosting
         env:
