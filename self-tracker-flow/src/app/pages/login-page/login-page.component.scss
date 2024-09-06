@@ -1,0 +1,14 @@
+.login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  justify-content: center;
+  height: 100vh;
+
+  h2 {
+    color: #0056b3;
+    margin-bottom: 20px;
+  }
+}

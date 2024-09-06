@@ -1,5 +1,7 @@
-<p>login-page works!</p>
-
-<button (click)="signInWithGoogle()">Reg Google</button>
-
-<button (click)="signOutUser()">Logout</button>
+<div class="login-page">
+  <h2>Sign In with</h2>
+  <section>
+    <button mat-flat-button (click)="signInWithGoogle()">Google</button>
+    <button mat-stroked-button (click)="signOutUser()">Logout</button>
+  </section>
+</div>
