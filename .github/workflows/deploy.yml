@@ -19,6 +19,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dist
+          run-id: ${{ github.event.workflow_run.run_id }}
 
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
