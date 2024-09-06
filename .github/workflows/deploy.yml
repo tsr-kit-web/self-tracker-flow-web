@@ -1,37 +1,64 @@
-name: Deploy to Firebase
+name: Build and Deploy
 
 on:
-  workflow_run:
-    workflows: ["Build and Test"]
-    types:
-      - completed
+  push:
+    branches:
+      - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion == 'success' && github.ref == 'refs/heads/main'
+
+    strategy:
+      matrix:
+        node-version: [18.x]
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
         with:
-          run-id: ${{ github.event.workflow_run.run_id }}
-          name: dist
+          node-version: ${{ matrix.node-version }}
+
+      - name: Cache npm modules
+        uses: actions/cache@v3
+        with:
+          path: self-tracker-flow/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('self-tracker-flow/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install dependencies
+        working-directory: self-tracker-flow
+        run: npm ci
 
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
-      - name: List build output before deploy
-        working-directory: self-tracker-flow
+      - name: Set up environment variables
         run: |
-          echo "Contents of dist directory:"
-          ls -R dist/
-
-      - name: Deploy to Firebase Hosting
+          echo "NG_APP_FIREBASE_API_KEY=${{ secrets.NG_APP_FIREBASE_API_KEY }}" >> $GITHUB_ENV
+          echo "NG_APP_FIREBASE_AUTH_DOMAIN=${{ secrets.NG_APP_FIREBASE_AUTH_DOMAIN }}" >> $GITHUB_ENV
+          echo "NG_APP_DATABASE_URL=${{ secrets.NG_APP_DATABASE_URL }}" >> $GITHUB_ENV
+          echo "NG_APP_FIREBASE_PROJECT_ID=${{ secrets.NG_APP_FIREBASE_PROJECT_ID }}" >> $GITHUB_ENV
+          echo "NG_APP_FIREBASE_STORAGE_BUCKET=${{ secrets.NG_APP_FIREBASE_STORAGE_BUCKET }}" >> $GITHUB_ENV
+          echo "NG_APP_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.NG_APP_FIREBASE_MESSAGING_SENDER_ID }}" >> $GITHUB_ENV
+          echo "NG_APP_FIREBASE_APP_ID=${{ secrets.NG_APP_FIREBASE_APP_ID }}" >> $GITHUB_ENV
+      - name: Lint code
         working-directory: self-tracker-flow
+        run: npm run ci:lint
+
+      - name: Run tests
+        working-directory: self-tracker-flow
+        run: npm run ci:test
+
+      - name: Build
+        working-directory: self-tracker-flow
+        run: npm run ci:build
+        
+      - name: Deploy to Firebase Hosting
+        working-directory: self-tracker-flow 
         run: |
           firebase deploy --only hosting
         env:
