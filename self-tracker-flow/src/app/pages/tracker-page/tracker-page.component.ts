@@ -23,6 +23,8 @@ export class TrackerPageComponent implements OnInit {
 
   form!: FormGroup;
 
+  photoURL!: string;
+
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
@@ -34,6 +36,10 @@ export class TrackerPageComponent implements OnInit {
     this.form = this.fb.group({
       items: this.fb.array(this.getDefaultTemplate()),
     });
+
+    this.loadFromLocalStorage();
+
+    this.photoURL = this.user?.photoURL ?? '';
   }
 
   get items(): FormArray {
@@ -69,6 +75,7 @@ export class TrackerPageComponent implements OnInit {
 
   updateParentPercentage(itemIndex: number): void {
     this.calculateParentPercentage(itemIndex);
+    this.saveToLocalStorage();
   }
 
   private getDefaultTemplate(): any[] {
@@ -119,5 +126,31 @@ export class TrackerPageComponent implements OnInit {
       name: name,
       included: false,
     });
+  }
+
+  private saveToLocalStorage(): void {
+    const formValue = this.form.value;
+    localStorage.setItem('trackerFormState', JSON.stringify(formValue));
+  }
+
+  private loadFromLocalStorage(): void {
+    const savedState = localStorage.getItem('trackerFormState');
+    if (savedState) {
+      const parsedState = JSON.parse(savedState);
+      this.form.setValue(parsedState);
+    }
+  }
+
+  clearForm(): void {
+    const items = this.form.get('items') as FormArray;
+
+    items.controls.forEach((item) => {
+      const subItems = item.get('subItems') as FormArray;
+      subItems.controls.forEach((subItem) => {
+        subItem.get('included')?.setValue(false);
+      });
+    });
+
+    localStorage.removeItem('trackerFormState');
   }
 }
