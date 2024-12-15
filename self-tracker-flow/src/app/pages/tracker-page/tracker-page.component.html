@@ -1,2 +1,40 @@
-<p>tracker-page works!</p>
+<p>tracker-page</p>
 <p>User {{ user?.displayName }}</p>
+
+<div class="global-total">
+  <strong>EDF Result: {{ calculateGlobalPercentage() }}%</strong>
+</div>
+
+<form [formGroup]="form">
+  <div
+    formArrayName="items"
+    *ngFor="let itemGroup of items.controls; let i = index"
+  >
+    <div [formGroupName]="i" class="item">
+      <!-- eslint-disable-next-line @angular-eslint/template/label-has-associated-control -->
+      <label>
+        <strong>{{ itemGroup.get('name')?.value }}</strong>
+      </label>
+      <div>
+        Total Percentage (Parent):
+        <strong>{{ calculateParentPercentage(i) }}%</strong>
+      </div>
+
+      <div
+        formArrayName="subItems"
+        *ngFor="let subItemGroup of getSubItems(i).controls; let j = index"
+      >
+        <div [formGroupName]="j" class="subitem">
+          <label>
+            <input
+              formControlName="included"
+              type="checkbox"
+              (change)="updateParentPercentage(i)"
+            />
+            {{ subItemGroup.get('name')?.value }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
