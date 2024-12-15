@@ -11,7 +11,7 @@ export const userAuthResolverServiceResolver: ResolveFn<User | null> = () => {
   const userService = inject(UserService);
 
   return authService.getAuthUser().pipe(
-    switchMap((user: AuthUser) => {
+    switchMap((user: AuthUser | null) => {
       if (!user) {
         return of(null);
       }

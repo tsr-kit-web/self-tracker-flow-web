@@ -30,6 +30,21 @@ module.exports = tseslint.config(
           style: "kebab-case",
         },
       ],
+      "@typescript-eslint/no-unused-expressions": [
+        "error",
+        {
+          "allowShortCircuit": false, 
+          "allowTernary": false,
+          "allowTaggedTemplates": false
+        }
+      ],
+      "@typescript-eslint/no-empty-function": [
+        "error",
+        {
+          "allow": ["arrowFunctions", "functions"]
+        }
+      ],
+      "@typescript-eslint/no-explicit-any": "warn"
     },
   },
   {
