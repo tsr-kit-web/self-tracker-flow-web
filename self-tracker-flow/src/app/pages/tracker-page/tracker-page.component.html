@@ -1,9 +1,14 @@
-<p>tracker-page</p>
-<p>User {{ user?.displayName }}</p>
+<div class="user-info">
+  @if (photoURL) {
+    <img src="{{ photoURL }}" alt="user photo" />
+  }
+  <p>{{ user?.displayName }}</p>
+</div>
 
 <div class="global-total">
   <strong>EDF Result: {{ calculateGlobalPercentage() }}%</strong>
 </div>
+<button type="button" (click)="clearForm()">Clear</button>
 
 <form [formGroup]="form">
   <div
