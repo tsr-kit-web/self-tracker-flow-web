@@ -46,7 +46,7 @@ export class TrackerPageComponent implements OnInit, OnDestroy {
   isAchievedStars = false;
   private destroy$ = new Subject<void>();
 
-  readonly SUCCESS_RATE = 80;
+  readonly SUCCESS_RATE = 75;
 
   constructor(
     private route: ActivatedRoute,
@@ -155,17 +155,15 @@ export class TrackerPageComponent implements OnInit, OnDestroy {
         name: 'Health',
         subItems: this.fb.array(
           [
-            '8h sleep',
-            'Morning hygiene',
-            'Protein-rich breakfast',
-            'Fitness / exercises / stretching',
-            'Cardio / Workout ',
-            'Healthy food additions',
-            'Enough water',
-            'Breaks',
+            'Sleep: 8h sleep',
+            'Hygiene: Morning + Evening + Additionally',
+            'Fitness & Gymnastics: Exercises / Stretching + Working Breaks',
+            'Sport: Cardio / Workout',
+            'Food: Protein-rich breakfast + Light dinner + Healthy additions',
+            'Diet: Balance diet + No bad food',
+            'Hydration: Enough water',
+            'Health Treatments: Body / Beauty',
             'Relaxing activities',
-            'Light dinner',
-            'Evening hygiene',
           ].map((name) => this.createSubItem(name)),
         ),
       }),
@@ -173,10 +171,10 @@ export class TrackerPageComponent implements OnInit, OnDestroy {
         name: 'Cognitive',
         subItems: this.fb.array(
           [
-            'Hardworking / (holiday) Contribution',
+            'Coding Practice: Exercises, Problem-solving, Base, DS, Alg',
+            'Hardworking / Contribution (holiday)',
             'English',
             'Learning + Implementing',
-            'Exercises Problem-solving Base. DS, Alg',
           ].map((name) => this.createSubItem(name)),
         ),
       }),
@@ -186,8 +184,8 @@ export class TrackerPageComponent implements OnInit, OnDestroy {
           [
             'Family time',
             'Friend communication',
-            'Community interaction actions',
-            'Content, notes for content',
+            'Communities interaction actions',
+            'Making Content',
           ].map((name) => this.createSubItem(name)),
         ),
       }),
