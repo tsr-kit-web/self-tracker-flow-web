@@ -13,7 +13,7 @@
     <mat-progress-bar
       [value]="calculateGlobalPercentage()"
       [color]="getProgressBarColor(calculateGlobalPercentage())"
-      [ngClass]="{ 'custom-progress-bar': calculateGlobalPercentage() >= 80 }"
+      [ngClass]="{ 'custom-progress-bar': calculateGlobalPercentage() >= SUCCESS_RATE }"
       mode="determinate"
     ></mat-progress-bar>
   </div>
@@ -65,7 +65,7 @@
                   [value]="calculateParentPercentage(i)"
                   [color]="getProgressBarColor(calculateParentPercentage(i))"
                   [ngClass]="{
-                    'custom-progress-bar': calculateParentPercentage(i) >= 80,
+                    'custom-progress-bar': calculateParentPercentage(i) >= SUCCESS_RATE,
                   }"
                 ></mat-progress-bar>
               </div>
