@@ -46,7 +46,7 @@ export class TrackerPageComponent implements OnInit, OnDestroy {
   isAchievedStars = false;
   private destroy$ = new Subject<void>();
 
-  readonly SUCCESS_RATE = 75;
+  readonly SUCCESS_RATE = 70;
 
   constructor(
     private route: ActivatedRoute,
